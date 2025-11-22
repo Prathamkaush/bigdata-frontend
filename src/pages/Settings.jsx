@@ -1,7 +1,7 @@
 import { useState ,useEffect } from "react";
-import api from "../../api/admin.js";
+import api from "../api/admin.js";
 import { Copy, RefreshCcw, User } from "lucide-react";
-import Loader from "../../components/Loader/loader.jsx"; 
+import Loader from "../components/Loader/loader.jsx"; 
 
 export default function Settings() {
   const [apiKey, setApiKey] = useState("");

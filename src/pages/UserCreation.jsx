@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import api from "../../api/admin.js";
+import api from "../api/admin.js";
 import { Search, UserPlus } from "lucide-react";
-import Loader from "../../components/Loader/loader.jsx"; // full-page loader
+import Loader from "../components/Loader/loader.jsx"; // full-page loader
 
 export default function Users() {
   const [name, setName] = useState("");

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../api/admin.js";
+import api from "../api/admin.js";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -9,7 +9,7 @@ import {
   PointElement,
 } from "chart.js";
 
-import Loader from "../../components/Loader/loader.jsx";
+import Loader from "../components/Loader/loader.jsx";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 

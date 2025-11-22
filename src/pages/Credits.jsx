@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../api/admin.js";
+import api from "../api/admin.js";
 import { Search, UserPlus, Plus } from "lucide-react";
 
 export default function Credits() {

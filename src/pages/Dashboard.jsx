@@ -6,8 +6,8 @@ import {
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
-import api from "../../api/admin.js";
-import Loader from "../../components/Loader/loader.jsx";
+import api from "../api/admin.js";
+import Loader from "../components/Loader/loader.jsx";
 
 import { Line } from "react-chartjs-2";
 import {
