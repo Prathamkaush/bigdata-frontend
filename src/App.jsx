@@ -3,12 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 
-import Dashboard from "./pages/dashboard/Dashboard";
-import CreateUser from "./pages/users/createuser";
-import Credits from "./pages/credits/Credits";
-import Logs from "./pages/logs/Logs";
-import StatsPage from "./pages/stats/StatsPage";
-import Settings from "./pages/settings/Settings";
+import Dashboard from "./pages/dashboard/Dashboard.jsx";
+import CreateUser from "./pages/users/createuser.jsx";
+import Credits from "./pages/credits/Credits.jsx";
+import Logs from "./pages/logs/Logs.jsx";
+import StatsPage from "./pages/stats/StatsPage.jsx";
+import Settings from "./pages/settings/Settings.jsx";
 
 export default function App() {
   return (
