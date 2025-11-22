@@ -1,14 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import Login from "./pages/auth/Login";
+import Login from "./pages/auth/login.jsx";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 
-import Dashboard from "./pages/dashboard/Dashboard.jsx";
+import Dashboard from "./pages/dashboard/dashboard.jsx";
 import CreateUser from "./pages/users/createuser.jsx";
-import Credits from "./pages/credits/Credits.jsx";
-import Logs from "./pages/logs/Logs.jsx";
-import StatsPage from "./pages/stats/StatsPage.jsx";
-import Settings from "./pages/settings/Settings.jsx";
+import Credits from "./pages/credits/credits.jsx";
+import Logs from "./pages/logs/logs.jsx";
+import StatsPage from "./pages/stats/statsPage.jsx";
+import Settings from "./pages/settings/settings.jsx";
 
 export default function App() {
   return (
