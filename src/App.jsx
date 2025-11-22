@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/auth/Login.jsx";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
-import CreateUser from "./pages/users/Createuser.jsx";
+import CreateUser from "./pages/users/UserCreation.jsx";
 import Credits from "./pages/credits/Credits.jsx";
 import Logs from "./pages/logs/Logger.jsx";
 import StatsPage from "./pages/stats/StatsPage.jsx";
