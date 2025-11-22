@@ -1,18 +1,149 @@
-# React + Vite
+# 🖥️ BigData Admin Dashboard  
+A modern, metallic-UI React admin dashboard for managing users, credits, logs, stats, and monitoring the Big Data API system.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This panel is used by admins to:
+- Log in using Admin API Key  
+- Manage users  
+- Add credits  
+- View logs  
+- View 30-day analytics & usage  
+- Run queries (optional)  
 
-Currently, two official plugins are available:
+Built with:
+- **React + Vite**
+- **TailwindCSS**
+- **Axios**
+- **Lucide-React icons**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Features
+### ✔ Secure Admin Login  
+Stores `admin_api_key` in localStorage  
+Protects all routes via `ProtectedLayout.jsx`
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### ✔ Users Management  
+- Create users  
+- View all users  
+- See credits & roles  
 
-Note: This will impact Vite dev & build performances.
+### ✔ Credits Management  
+- Add credits  
+- Filters: role, sort, search  
+- Pagination  
 
-## Expanding the ESLint configuration
+### ✔ Logs  
+- Full API logs  
+- Searchable  
+- Paginated  
+- Shimmer loading UI  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### ✔ Statistics / Charts  
+- Today usage  
+- 30-day usage  
+- Total requests  
+- Dynamic API call graph  
+
+---
+
+## 📁 Project Structure
+
+```
+/bigdata-admin
+│
+├── src/
+│   ├── api/
+│   │   ├── axios.js
+│   │   └── admin.js
+│   │
+│   ├── components/
+│   │   ├── Sidebar.jsx
+│   │   ├── Loader.jsx
+│   │   ├── StatCard.jsx
+│   │   └── layout/
+│   │       └── ProtectedLayout.jsx
+│   │
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── UserCreation.jsx
+│   │   ├── Credits.jsx
+│   │   ├── Logger.jsx
+│   │   ├── StatsPage.jsx
+│   │   └── Settings.jsx
+│   │
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── public/
+├── package.json
+└── vite.config.js
+```
+
+---
+
+## 🔧 Setup Instructions
+
+### 1️⃣ Install dependencies
+```bash
+npm install
+```
+
+### 2️⃣ Start development server
+```bash
+npm run dev
+```
+
+---
+
+## 🌍 Environment (Important)
+
+Update `axios.js`:
+
+```js
+const api = axios.create({
+  baseURL: "https://bigdata-backend-s33g.onrender.com",
+});
+```
+
+---
+
+## 🔐 Admin Login
+
+In the Login page:
+
+1. Enter admin API key  
+2. Saved in `localStorage.admin_api_key`  
+3. Redirects to dashboard  
+4. All pages require this key  
+
+---
+
+## 📦 Production Build
+
+```bash
+npm run build
+```
+
+Upload `dist/` folder to:
+- Vercel  
+- Netlify  
+- Cloudflare Pages  
+- Nginx  
+
+---
+
+## 🌈 UI / UX Enhancements
+- Metallic theme  
+- Glow animation loader  
+- Responsive tables  
+- Smooth transitions  
+- Shimmer skeleton loading  
+
+---
+
+## 🧑‍💻 Author
+**Pratham Kaushik**  
+Frontend Developer & System Architect  
+GitHub: https://github.com/Prathamkaush
+
