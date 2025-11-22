@@ -22,16 +22,12 @@ export default function Credits() {
     loadUsers();
   }, []);
 
-  // ---------------------
-  //   LOAD USERS
-  // ---------------------
   const loadUsers = async () => {
     setLoading(true);
 
     try {
       const res = await api.get("/v1/admin/users");
 
-      // small delay to prevent shimmer flicker
       setTimeout(() => {
         setUsers(res.data);
         setFiltered(res.data);
@@ -43,9 +39,6 @@ export default function Credits() {
     }
   };
 
-  // ---------------------
-  //   ADD CREDITS
-  // ---------------------
   const handleAddCredits = async () => {
     if (!username || !credits) return alert("Fill all fields");
 
@@ -66,9 +59,6 @@ export default function Credits() {
     }
   };
 
-  // ---------------------
-  //   FILTERS
-  // ---------------------
   useEffect(() => {
     let data = [...users];
 
@@ -92,9 +82,6 @@ export default function Credits() {
     setPage(1);
   }, [search, roleFilter, creditSort, users]);
 
-  // ---------------------
-  //   PAGINATION
-  // ---------------------
   const paginated = filtered.slice(
     (page - 1) * rowsPerPage,
     page * rowsPerPage
@@ -103,12 +90,13 @@ export default function Credits() {
   const totalPages = Math.ceil(filtered.length / rowsPerPage);
 
   return (
-    <div className="space-y-10 px-2">
+    <div className="space-y-10 px-2 md:px-6">
 
       <h1 className="text-2xl font-bold">Add Credits</h1>
 
-      {/* Add Form */}
-      <div className="bg-metallic-plate p-6 rounded-xl border border-metallic-gun max-w-xl mx-auto shadow-lg">
+      {/* Add Credits Form */}
+      <div className="bg-metallic-plate p-6 rounded-xl border border-metallic-gun max-w-xl mx-auto w-full shadow-lg">
+
         <label>User Name</label>
         <div className="flex items-center gap-2 mt-2 bg-black/40 p-3 rounded border border-metallic-gun">
           <UserPlus size={18} className="text-gray-400" />
@@ -134,7 +122,7 @@ export default function Credits() {
 
         <button
           onClick={handleAddCredits}
-          className="mt-5 bg-accent text-black px-5 py-2 rounded-lg font-semibold hover:bg-accent/80 transition"
+          className="mt-5 w-full bg-accent text-black px-5 py-2 rounded-lg font-semibold hover:bg-accent/80 transition"
         >
           Add Credits
         </button>
@@ -144,7 +132,8 @@ export default function Credits() {
       <div className="bg-metallic-plate p-6 rounded-xl border border-metallic-gun shadow-lg">
 
         {/* Filters */}
-        <div className="flex flex-wrap items-center gap-4 mb-5">
+        <div className="flex flex-col md:flex-row gap-4 mb-5">
+
           <div className="flex items-center bg-black/40 p-2 rounded border border-metallic-gun flex-1">
             <Search size={18} className="text-gray-400 mr-2" />
             <input
@@ -155,75 +144,79 @@ export default function Credits() {
             />
           </div>
 
-          <select
-            value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
-            className="p-2 bg-black/40 border border-metallic-gun text-white rounded"
-          >
-            <option value="all">All Roles</option>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-          </select>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="p-2 bg-black/40 border border-metallic-gun text-white rounded"
+            >
+              <option value="all">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
 
-          <select
-            value={creditSort}
-            onChange={(e) => setCreditSort(e.target.value)}
-            className="p-2 bg-black/40 border border-metallic-gun text-white rounded"
-          >
-            <option value="none">Sort Credits</option>
-            <option value="asc">Low → High</option>
-            <option value="desc">High → Low</option>
-          </select>
+            <select
+              value={creditSort}
+              onChange={(e) => setCreditSort(e.target.value)}
+              className="p-2 bg-black/40 border border-metallic-gun text-white rounded"
+            >
+              <option value="none">Sort Credits</option>
+              <option value="asc">Low → High</option>
+              <option value="desc">High → Low</option>
+            </select>
+          </div>
+
         </div>
 
-        {/* Table */}
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-metallic-gun">
-            <tr>
-              <th className="p-3 border border-metallic-gun">ID</th>
-              <th className="p-3 border border-metallic-gun">User</th>
-              <th className="p-3 border border-metallic-gun">Role</th>
-              <th className="p-3 border border-metallic-gun">Credits</th>
-              <th className="p-3 border border-metallic-gun">Created At</th>
-            </tr>
-          </thead>
+        {/* Scrollable Table */}
+        <div className="overflow-x-auto rounded-lg">
+          <table className="w-full text-left border-collapse min-w-[700px]">
+            <thead className="bg-metallic-gun">
+              <tr>
+                <th className="p-3 border border-metallic-gun">ID</th>
+                <th className="p-3 border border-metallic-gun">User</th>
+                <th className="p-3 border border-metallic-gun">Role</th>
+                <th className="p-3 border border-metallic-gun">Credits</th>
+                <th className="p-3 border border-metallic-gun">Created At</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {/* FULL SHIMMER - No Data Flash */}
-            {loading ? (
-              [...Array(8)].map((_, i) => (
-                <tr key={i} className="animate-pulse">
-                  <td className="p-4 bg-black/20 rounded"></td>
-                  <td className="p-4 bg-black/20 rounded"></td>
-                  <td className="p-4 bg-black/20 rounded"></td>
-                  <td className="p-4 bg-black/20 rounded"></td>
-                  <td className="p-4 bg-black/20 rounded"></td>
-                </tr>
-              ))
-            ) : (
-              paginated.map((u) => (
-                <tr
-                  key={u.id}
-                  className="border-b border-metallic-gun/50 hover:bg-black/20 transition"
-                >
-                  <td className="p-3">{u.id}</td>
-                  <td className="p-3">{u.username}</td>
-                  <td className="p-3 capitalize">{u.role}</td>
-                  <td className="p-3">{u.credits}</td>
-                  <td className="p-3">
-                    {new Date(u.created_at).toLocaleString("en-IN", {
-                      hour12: true,
-                    })}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+            <tbody>
+              {loading ? (
+                [...Array(8)].map((_, i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="p-4 bg-black/20 rounded"></td>
+                    <td className="p-4 bg-black/20 rounded"></td>
+                    <td className="p-4 bg-black/20 rounded"></td>
+                    <td className="p-4 bg-black/20 rounded"></td>
+                    <td className="p-4 bg-black/20 rounded"></td>
+                  </tr>
+                ))
+              ) : (
+                paginated.map((u) => (
+                  <tr
+                    key={u.id}
+                    className="border-b border-metallic-gun/50 hover:bg-black/20 transition"
+                  >
+                    <td className="p-3">{u.id}</td>
+                    <td className="p-3">{u.username}</td>
+                    <td className="p-3 capitalize">{u.role}</td>
+                    <td className="p-3">{u.credits}</td>
+                    <td className="p-3">
+                      {new Date(u.created_at).toLocaleString("en-IN", {
+                        hour12: true,
+                      })}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {/* Pagination */}
         {!loading && totalPages > 1 && (
-          <div className="flex justify-center gap-4 mt-6">
+          <div className="flex flex-wrap justify-center gap-4 mt-6">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
@@ -232,7 +225,9 @@ export default function Credits() {
               Prev
             </button>
 
-            <span className="text-gray-300">Page {page} of {totalPages}</span>
+            <span className="text-gray-300">
+              Page {page} of {totalPages}
+            </span>
 
             <button
               disabled={page === totalPages}
