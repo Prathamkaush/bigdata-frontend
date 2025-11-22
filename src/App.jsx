@@ -4,7 +4,7 @@ import Login from "./pages/auth/Login";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 
 import Dashboard from "./pages/dashboard/Dashboard";
-import CreateUser from "./pages/users/CreateUser";
+import CreateUser from "./pages/users/createuser";
 import Credits from "./pages/credits/Credits";
 import Logs from "./pages/logs/Logs";
 import StatsPage from "./pages/stats/StatsPage";
