@@ -4,10 +4,10 @@ import Login from "./pages/auth/Login";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 
 import Dashboard from "./pages/dashboard/Dashboard";
-import CreateUser from "./pages/users/createuser";
+import CreateUser from "./pages/users/CreateUser";  // FIXED
 import Credits from "./pages/credits/Credits";
-import Logs from "./pages/logs/Logs";
-import StatsPage from "./pages/stats/StatsPage";
+import Logs from "./pages/logs/Logs";               // FIXED
+import StatsPage from "./pages/stats/StatsPage";    // FIXED
 import Settings from "./pages/settings/Settings";
 
 export default function App() {
@@ -31,9 +31,7 @@ export default function App() {
           <Route path="/settings" element={<Settings />} />
         </Route>
 
-        {/* Optional 404 */}
         <Route path="*" element={<div className="p-10 text-white">404 Not Found</div>} />
-
       </Routes>
     </BrowserRouter>
   );
