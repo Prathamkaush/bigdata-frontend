@@ -18,11 +18,8 @@ export default function Logs() {
 
   const loadLogs = async () => {
     setLoading(true);
-
     try {
       const res = await api.get("/v1/admin/logs");
-
-      // small delay for smoother shimmer feel
       setTimeout(() => {
         setLogs(res.data);
         setFiltered(res.data);
@@ -43,9 +40,7 @@ export default function Logs() {
     }
 
     const result = logs.filter((log) =>
-      JSON.stringify(log)
-        .toLowerCase()
-        .includes(value.toLowerCase())
+      JSON.stringify(log).toLowerCase().includes(value.toLowerCase())
     );
 
     setFiltered(result);
@@ -60,27 +55,28 @@ export default function Logs() {
   const totalPages = Math.ceil(filtered.length / logsPerPage);
 
   return (
-    <div className="relative">
+    <div className="relative p-2 sm:p-0">
 
-      {/* FULL PAGE LOADER OVERLAY */}
+      {/* Loader */}
       {loading && (
         <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
           <Loader />
         </div>
       )}
 
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">API Logs</h1>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold">API Logs</h1>
 
         <button
           onClick={loadLogs}
-          className="flex items-center gap-2 px-4 py-2 bg-accent text-black rounded hover:bg-white transition"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-accent text-black rounded hover:bg-white transition w-full sm:w-auto"
         >
           <RefreshCcw size={16} /> Refresh
         </button>
       </div>
 
-      {/* Search Box */}
+      {/* Search */}
       <div className="flex items-center bg-metallic-plate p-3 rounded border border-metallic-gun mb-5">
         <Search size={18} className="text-gray-400 mr-2" />
         <input
@@ -91,53 +87,22 @@ export default function Logs() {
         />
       </div>
 
-      {/* Logs Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+      {/* Table Wrapper (scroll on mobile) */}
+      <div className="overflow-x-auto border border-metallic-gun rounded-lg">
+        <table className="w-full text-left border-collapse min-w-[600px]">
           <thead className="bg-metallic-gun sticky top-0">
             <tr>
-              <th className="p-3 border border-metallic-gun">Id</th>
-              <th className="p-3 border border-metallic-gun">User ID</th>
-              <th className="p-3 border border-metallic-gun">Endpoint</th>
-              <th className="p-3 border border-metallic-gun">Timestamp</th>
+              <th className="p-3 border border-metallic-gun text-sm">Id</th>
+              <th className="p-3 border border-metallic-gun text-sm">User ID</th>
+              <th className="p-3 border border-metallic-gun text-sm">Endpoint</th>
+              <th className="p-3 border border-metallic-gun text-sm">Timestamp</th>
             </tr>
           </thead>
 
           <tbody>
-            {/* ✨ SHIMMER ROWS */}
-            {loading &&
-              [...Array(10)].map((_, i) => (
-                <tr key={i} className="animate-pulse">
-                  <td className="p-3">
-                    <div className="h-4 bg-metallic-gun/50 rounded w-10"></div>
-                  </td>
-                  <td className="p-3">
-                    <div className="h-4 bg-metallic-gun/50 rounded w-20"></div>
-                  </td>
-                  <td className="p-3">
-                    <div className="h-4 bg-metallic-gun/50 rounded w-40"></div>
-                  </td>
-                  <td className="p-3">
-                    <div className="h-4 bg-metallic-gun/50 rounded w-32"></div>
-                  </td>
-                </tr>
-              ))}
-
-            {/* ✨ NO LOGS */}
-            {!loading && paginatedLogs.length === 0 && (
-              <tr>
-                <td colSpan="4" className="p-4 text-center text-gray-400">
-                  No logs found.
-                </td>
-              </tr>
-            )}
-
-            {/* ✨ REAL DATA */}
             {!loading &&
               paginatedLogs.map((log, index) => {
-                const globalIndex =
-                  (page - 1) * logsPerPage + index + 1;
-
+                const globalIndex = (page - 1) * logsPerPage + index + 1;
                 return (
                   <tr
                     key={globalIndex}
@@ -145,8 +110,8 @@ export default function Logs() {
                   >
                     <td className="p-3 text-gray-400">{globalIndex}</td>
                     <td className="p-3">{log.user_id}</td>
-                    <td className="p-3">{log.endpoint}</td>
-                    <td className="p-3">
+                    <td className="p-3 break-all">{log.endpoint}</td>
+                    <td className="p-3 whitespace-nowrap">
                       {new Date(log.created_at).toLocaleString("en-IN", {
                         hour12: true,
                       })}
@@ -160,7 +125,7 @@ export default function Logs() {
 
       {/* Pagination */}
       {!loading && totalPages > 1 && (
-        <div className="flex justify-center gap-4 mt-6">
+        <div className="flex justify-center items-center gap-4 mt-6">
           <button
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
