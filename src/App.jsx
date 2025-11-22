@@ -5,7 +5,7 @@ import ProtectedLayout from "./components/layout/ProtectedLayout";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import CreateUser from "./pages/users/createuser.jsx";
 import Credits from "./pages/credits/Credits.jsx";
-import Logs from "./pages/logs/logs.jsx";
+import Logs from "./pages/logs/Logs.jsx";
 import StatsPage from "./pages/stats/statsPage.jsx";
 import Settings from "./pages/settings/settings.jsx";
 
