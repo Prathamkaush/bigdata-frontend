@@ -1,197 +1,168 @@
 /bigdata-admin
 │
 ├── src/
-│   ├── api/
-│   │   ├── axios.js                → axios instance with baseURL and headers
-│   │   └── admin.js                → Admin API wrapper (logs, users, credits, stats)
+│   ├── api/                       # All API integrations (Modular)
+│   │   ├── axios.js
+│   │   ├── admin.js
+│   │   ├── user.js
+│   │   ├── credits.js
+│   │   ├── feedback.js
+│   │   ├── analytics.js
+│   │   ├── billing.js
+│   │   └── settings.js
+│   │
+│   ├── auth/                      # Authentication system
+│   │   ├── AuthProvider.jsx
+│   │   ├── useAuth.js
+│   │   ├── PrivateRoute.jsx
+│   │   └── loginHandler.js
 │   │
 │   ├── components/
-│   │   ├── Sidebar.jsx             → Left sidebar menu
-│   │   ├── Navbar.jsx              → Top navigation (optional)
-│   │   ├── Loader.jsx              → Glowing 4-box loader
-│   │   └── StatCard.jsx            → Reusable stat card component
+│   │   ├── ui/                    # Reusable UI components
+│   │   │   ├── Button.jsx
+│   │   │   ├── Input.jsx
+│   │   │   ├── Card.jsx
+│   │   │   ├── Select.jsx
+│   │   │   ├── Table.jsx
+│   │   │   ├── Modal.jsx
+│   │   │   └── Pagination.jsx
+│   │   │
+│   │   ├── analytics/             # Charts + graphs
+│   │   │   ├── UsageChart.jsx
+│   │   │   ├── CreditsChart.jsx
+│   │   │   ├── RequestsChart.jsx
+│   │   │   └── Heatmap.jsx
+│   │   │
+│   │   ├── layout/                # Admin layout components
+│   │   │   ├── Sidebar.jsx
+│   │   │   ├── Topbar.jsx
+│   │   │   ├── ProtectedLayout.jsx
+│   │   │   └── AdminLayout.jsx
+│   │   │
+│   │   ├── Loader.jsx
+│   │   ├── StatCard.jsx
+│   │   ├── InfoCard.jsx
+│   │   ├── EmptyState.jsx
+│   │   └── FeedbackCard.jsx
 │   │
-│   ├── layouts/
-│   │   └── DashboardLayout.jsx     → Wrapper: Sidebar + main content
+│   ├── hooks/                     # Custom reusable hooks
+│   │   ├── useFetch.js
+│   │   ├── useDebounce.js
+│   │   ├── usePagination.js
+│   │   ├── useLocalStorage.js
+│   │   └── useSortAndFilter.js
+│   │
+│   ├── context/                   # Global contexts
+│   │   ├── ThemeContext.jsx
+│   │   ├── NotificationContext.jsx
+│   │   └── SidebarContext.jsx
 │   │
 │   ├── pages/
+│   │   ├── login/
+│   │   │   └── Login.jsx
+│   │   │
 │   │   ├── dashboard/
-│   │   │   └── Dashboard.jsx       → Summary cards + Chart.js overview
+│   │   │   └── Dashboard.jsx
 │   │   │
 │   │   ├── users/
-│   │   │   └── Users.jsx           → Create user + table + search + pagination
+│   │   │   ├── UserList.jsx
+│   │   │   ├── CreateUser.jsx
+│   │   │   └── UserDetails.jsx
 │   │   │
 │   │   ├── credits/
-│   │   │   └── Credits.jsx         → Add credits + sorting + filtering
+│   │   │   ├── CreditsMain.jsx
+│   │   │   ├── AddCredits.jsx
+│   │   │   └── ManageCredits.jsx
+│   │   │
+│   │   ├── feedback/
+│   │   │   ├── FeedbackList.jsx
+│   │   │   └── FeedbackDetails.jsx
 │   │   │
 │   │   ├── logs/
-│   │   │   └── Logs.jsx            → Logs table + search + pagination
+│   │   │   └── Logs.jsx
 │   │   │
-│   │   ├── stats/
-│   │   │   └── Stats.jsx           → Detailed usage graph + daily table
+│   │   ├── analytics/
+│   │   │   ├── UsageAnalytics.jsx
+│   │   │   ├── CreditsAnalytics.jsx
+│   │   │   ├── EndpointAnalytics.jsx
+│   │   │   └── HeatmapAnalytics.jsx
 │   │   │
-│   │   └── settings/
-│   │       └── Settings.jsx        → Theme, profile, regenerate API key
+│   │   ├── settings/
+│   │   │   ├── GeneralSettings.jsx
+│   │   │   ├── SecuritySettings.jsx
+│   │   │   └── ApiKeys.jsx
+│   │   │
+│   │   └── system/
+│   │       ├── SystemHealth.jsx
+│   │       ├── DatabaseStats.jsx
+│   │       └── WorkerStatus.jsx
 │   │
-│   ├── App.jsx                     → Routing + Layout structure
-│   ├── main.jsx                    → React root
-│   └── index.css                   → Tailwind + global styles
-│
-├── public/
-│
-├── vite.config.js
-├── package.json
-└── README.md
+│   ├── utils/
+│   │   ├── format.js
+│   │   ├── constants.js
+│   │   ├── validators.js
+│   │   ├── theme.js
+│   │   └── helpers.js
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
 
-Frontend
+✅ Already Completed by Us
+✔ Users Module
 
-✔ Frontend architecture complete
-✔ Dashboard, Stats, Logs, Users, Credits, Settings all working
-✔ Shimmer loaders integrated
-✔ Admin panel UI done
-✔ axios wrapper ready
-✔ Local frontend works correctly
+User list
 
-🚧 WHAT REMAINS TO DEPLOY (NOT DONE YET)
+User details
 
-Pratham, you're very close to completion, but these final deployment steps are still pending.
+Regenerate key
 
-🟡 1. Build & Push Docker Images to a Registry
+Delete user
 
-You need to push:
+Pagination
 
-Backend images
-bigdata/api:latest
-bigdata/ingest:latest
+Role + credit filters
 
+Color coding based on credits
 
-Right now your Dockerfile builds locally — but deployment needs them in Docker Hub or GHCR.
+Responsive
 
-Example commands:
+Sidebar auto-open
 
-docker build -t prathamkaushik/bigdata-api -f deploy/docker/Dockerfile.api .
-docker build -t prathamkaushik/bigdata-ingest -f deploy/docker/Dockerfile.ingest .
-docker push prathamkaushik/bigdata-api
-docker push prathamkaushik/bigdata-ingest
+ProtectedLayout
 
+✔ Credits Module
 
-❗ YOU HAVE NOT DONE THIS YET
-Your K8s deployment currently expects images from a registry.
+Add credits
 
-🟡 2. ClickHouse, Redis, Postgres need Persistent Storage
+Manage credits
 
-Your docker-compose starts them, but for real deployment:
+Full filtering (role, search, sorting)
 
-K8s needs:
-PersistentVolume
-PersistentVolumeClaim
-StatefulSet (for ClickHouse, Postgres)
+Color badge for credit levels
 
+Pagination
 
-You DO NOT have:
+View button → user details
 
-❌ clickhouse-statefulset
-❌ postgres-statefulset
-❌ redis-statefulset
+✔ Logs Module
 
-I can generate them for you.
+Complete log viewer
 
-🟡 3. K8s Service YAML Missing
+Pagination in details page
 
-You created:
+✔ Feedback Module
 
-✔ api-deployment.yaml
+Backend done
 
-But missing:
+Frontend cards UI done
 
-❌ api-service.yaml (LoadBalancer or NodePort)
-❌ clickhouse-service.yaml
-❌ postgres-service.yaml
-❌ redis-service.yaml
+Filters (new / replied / fixed)
 
-Without services, pods cannot communicate.
+✔ Dashboard
 
-🟡 4. Ingress (Optional but recommended)
+Stats
 
-To access API from frontend:
+API key protection
 
-https://api.pratham.com
-
-
-You need:
-
-Ingress Controller
-
-ingress.yaml
-
-If you want custom domain.
-
-🟡 5. Environment Variables for K8s
-
-Your current Dockerfile uses:
-
-DATABASE_URL
-CLICKHOUSE_URL
-REDIS_ADDR
-ADMIN_API_KEY
-
-
-But K8s does NOT provide them.
-
-Missing:
-
-❌ ConfigMap
-❌ Secret
-
-I can create them for you.
-
-🟡 6. Frontend Deployment Steps Missing
-
-Frontend needs its own deployment:
-
-Steps missing:
-
-❌ Build frontend (npm run build)
-❌ Dockerfile for frontend
-❌ K8s deployment for frontend
-❌ NGINX config or Vercel deployment
-❌ Environment variable for API base URL
-(You must switch axios baseURL from localhost → cluster URL)
-
-🟡 7. Ingestion Worker Not Deployed
-
-You created Dockerfile.ingest but:
-
-❌ No deployment or CronJob for ingest
-❌ No volume mount for input files
-❌ No real pipeline trigger script
-
-We need:
-
-K8s CronJob → run ingestion nightly
-
-S3 bucket or local persistent volume
-
-ingestion Job YAML
-
-🟡 8. Monitoring (Optional but needed for assignment)
-
-Not yet added:
-
-❌ Prometheus
-❌ Grafana
-❌ ClickHouse metrics
-❌ API logs dashboard
-
-🟢 SUMMARY: WHAT IS LEFT?
-Task	Status
-Push Docker images to registry	❌ Pending
-K8s services	❌ Pending
-K8s secrets & configmap	❌ Pending
-K8s StatefulSets for DB	❌ Pending
-API service exposure	❌ Pending
-Frontend build & Dockerfile	❌ Pending
-Frontend deployment	❌ Pending
-Update frontend axios baseURL	❌ Pending
-Ingestion CronJob	❌ Pending
-Monitoring	Optional
+Graph structure ready
