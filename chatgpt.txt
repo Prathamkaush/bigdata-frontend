@@ -1,87 +1,87 @@
 /bigdata-admin
 │
 ├── src/
-│   ├── api/                       # All API integrations (Modular)
-│   │   ├── axios.js
-│   │   ├── admin.js
-│   │   ├── user.js
-│   │   ├── credits.js
-│   │   ├── feedback.js
-│   │   ├── analytics.js
-│   │   ├── billing.js
-│   │   └── settings.js
+│   ├── api/                           # All API communication (modular)
+│   │   ├                
+│   │   ├── admin.js                   # Admin APIs
+│   │   ├
+│   │   ├
+│   │   ├
+│   │   ├
+│   │   ├
+│   │   └
 │   │
-│   ├── auth/                      # Authentication system
-│   │   ├── AuthProvider.jsx
-│   │   ├── useAuth.js
-│   │   ├── PrivateRoute.jsx
-│   │   └── loginHandler.js
+│   ├ 
+│   │  
+│   │  
+│   │  
+│   │  
 │   │
 │   ├── components/
-│   │   ├── ui/                    # Reusable UI components
+│   │   ├── ui/                        # Fully reusable UI components
 │   │   │   ├── Button.jsx
-│   │   │   ├── Input.jsx
-│   │   │   ├── Card.jsx
-│   │   │   ├── Select.jsx
-│   │   │   ├── Table.jsx
-│   │   │   ├── Modal.jsx
-│   │   │   └── Pagination.jsx
+│   │   │   
+│   │   │   
+│   │   │   
+│   │   │   
+│   │   │   
+│   │   │   
 │   │   │
-│   │   ├── analytics/             # Charts + graphs
-│   │   │   ├── UsageChart.jsx
-│   │   │   ├── CreditsChart.jsx
-│   │   │   ├── RequestsChart.jsx
-│   │   │   └── Heatmap.jsx
+│   │   ├── 
+│   │   │   
+│   │   │   
+│   │   │   
+│   │   │   
 │   │   │
-│   │   ├── layout/                # Admin layout components
+│   │   ├── layout/                    # Layout structure
 │   │   │   ├── Sidebar.jsx
-│   │   │   ├── Topbar.jsx
-│   │   │   ├── ProtectedLayout.jsx
-│   │   │   └── AdminLayout.jsx
+│   │   │   ├── Layout.jsx             # Full admin wrapper
+│   │   │   ├         
+│   │   │   └── ProtectedLayout.jsx    # Layout + role guard
 │   │   │
-│   │   ├── Loader.jsx
-│   │   ├── StatCard.jsx
-│   │   ├── InfoCard.jsx
-│   │   ├── EmptyState.jsx
-│   │   └── FeedbackCard.jsx
+│   │   ├── Loader.jsx                 # Global loader
+│   │   ├── StatCard.jsx               # Dashboard cards
+│   │   ├─
+│   │   ├─
+│   │   └─
 │   │
-│   ├── hooks/                     # Custom reusable hooks
-│   │   ├── useFetch.js
-│   │   ├── useDebounce.js
-│   │   ├── usePagination.js
-│   │   ├── useLocalStorage.js
-│   │   └── useSortAndFilter.js
+│   ├─
+│   │   
+│   │   
+│   │   
+│   │   
+│   │   
 │   │
-│   ├── context/                   # Global contexts
-│   │   ├── ThemeContext.jsx
-│   │   ├── NotificationContext.jsx
-│   │   └── SidebarContext.jsx
+│   ├── 
+│   │   
+│   │   
+│   │   
 │   │
 │   ├── pages/
 │   │   ├── login/
 │   │   │   └── Login.jsx
 │   │   │
 │   │   ├── dashboard/
-│   │   │   └── Dashboard.jsx
+│   │   │   └── Dashboard.jsx          # Main dashboard + graphs
 │   │   │
-│   │   ├── users/
+│   │   ├── users/                     # User Module
 │   │   │   ├── UserList.jsx
 │   │   │   ├── CreateUser.jsx
 │   │   │   └── UserDetails.jsx
 │   │   │
-│   │   ├── credits/
+│   │   ├── credits/                   # Credits Module
 │   │   │   ├── CreditsMain.jsx
 │   │   │   ├── AddCredits.jsx
 │   │   │   └── ManageCredits.jsx
 │   │   │
-│   │   ├── feedback/
+│   │   ├── feedback/                  # Feedback Module
 │   │   │   ├── FeedbackList.jsx
 │   │   │   └── FeedbackDetails.jsx
 │   │   │
 │   │   ├── logs/
-│   │   │   └── Logs.jsx
+│   │   │   └── Logs.jsx               # All logs viewer
 │   │   │
-│   │   ├── analytics/
+│   │   ├── analytics/                 # Analytics dashboards
 │   │   │   ├── UsageAnalytics.jsx
 │   │   │   ├── CreditsAnalytics.jsx
 │   │   │   ├── EndpointAnalytics.jsx
@@ -92,77 +92,45 @@
 │   │   │   ├── SecuritySettings.jsx
 │   │   │   └── ApiKeys.jsx
 │   │   │
-│   │   └── system/
+│   │   └── system/                    # System monitoring
 │   │       ├── SystemHealth.jsx
 │   │       ├── DatabaseStats.jsx
 │   │       └── WorkerStatus.jsx
 │   │
-│   ├── utils/
-│   │   ├── format.js
-│   │   ├── constants.js
-│   │   ├── validators.js
-│   │   ├── theme.js
-│   │   └── helpers.js
+│   ├── 
+│   │   
+│   │   
+│   │   
+│   │   
+│   │   
 │   │
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
+│   ├── App.jsx                        # App router
+│   ├── main.jsx                       # React entry
+│   └── index.css                      # Tailwind / custom CSS
+│
+├── public/
+│   ├── favicon.ico
+│   ├── logo.svg
+│   └── index.html
+│
+├── package.json
+├── vite.config.js
+├── README.md
+└── .env
 
-✅ Already Completed by Us
-✔ Users Module
+Partially Done (next steps)
+🔸 Credit History (audit log)
 
-User list
+Frontend + backend needed.
 
-User details
+🔸 Feedback Status Change
 
-Regenerate key
+(reply, mark resolved)
 
-Delete user
+🔸 System Monitoring
 
-Pagination
+CPU, RAM, DB latency — needs backend + UI.
 
-Role + credit filters
+🔸 Dynamic Analytics (ClickHouse)
 
-Color coding based on credits
-
-Responsive
-
-Sidebar auto-open
-
-ProtectedLayout
-
-✔ Credits Module
-
-Add credits
-
-Manage credits
-
-Full filtering (role, search, sorting)
-
-Color badge for credit levels
-
-Pagination
-
-View button → user details
-
-✔ Logs Module
-
-Complete log viewer
-
-Pagination in details page
-
-✔ Feedback Module
-
-Backend done
-
-Frontend cards UI done
-
-Filters (new / replied / fixed)
-
-✔ Dashboard
-
-Stats
-
-API key protection
-
-Graph structure ready
+Need filters → endpoint / time range / heatmap.

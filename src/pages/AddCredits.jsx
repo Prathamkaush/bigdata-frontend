@@ -10,6 +10,7 @@ export default function AddCredits() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [suggestOpen, setSuggestOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     // load small users list for suggestions
@@ -24,10 +25,10 @@ export default function AddCredits() {
   }, []);
 
   const handleAddCredits = async () => {
-    if (!username.trim() || !credits) return alert("Fill all fields");
+    if (!userId) return alert("Please select a user from suggestions!");
     setLoading(true);
     try {
-      await api.post("/v1/admin/add-credits", { username, credits: Number(credits) });
+      await api.post("/v1/admin/add-credits", { user_id: userId, credits: Number(credits) });
       alert("Credits added!");
       setUsername("");
       setCredits("");
@@ -65,7 +66,9 @@ export default function AddCredits() {
                 {suggestions.map((s) => (
                   <div
                     key={s.id}
-                    onClick={() => { setUsername(s.username); setSuggestOpen(false); }}
+                    onClick={() => { setUsername(s.username);
+                      setUserId(s.id);
+                      setSuggestOpen(false); }}
                     className="px-3 py-2 hover:bg-metallic-plate cursor-pointer"
                   >
                     {s.username} <span className="text-gray-400">• {s.credits} credits</span>
