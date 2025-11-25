@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import {
   Activity,
   Users,
@@ -9,6 +8,8 @@ import {
   Star,
 } from "lucide-react";
 
+import { Bar } from "react-chartjs-2";
+
 import { useEffect, useState, useRef } from "react";
 import api from "../api/admin.js";
 import Loader from "../components/Loader/loader.jsx";
@@ -17,17 +18,19 @@ import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineElement,
-  BarElement,
+  BarElement,      
   CategoryScale,
   LinearScale,
   PointElement,
   Tooltip,
   Legend,
+  BarController     
 } from "chart.js";
 
 ChartJS.register(
   LineElement,
   BarElement,
+  BarController,    
   CategoryScale,
   LinearScale,
   PointElement,
@@ -221,7 +224,7 @@ export default function Dashboard() {
         {daily.length === 0 ? (
           <div className="text-center text-gray-400 py-20">No usage history yet.</div>
         ) : (
-          <Chart ref={chartRef} type="bar" data={chartData} options={chartOptions} />
+          <Bar ref={chartRef} type="bar" data={chartData} options={chartOptions} />
         )}
       </div>
 
