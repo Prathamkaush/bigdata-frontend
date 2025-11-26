@@ -130,47 +130,47 @@ export default function Dashboard() {
   };
 
   const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { mode: "index", intersect: false },
-    plugins: {
-      legend: {
-        labels: { color: "#d1d5db" },
-        position: "top",
-      },
-      tooltip: {
-        enabled: true,
-        mode: "index",
-        intersect: false,
-        // subtle animation
-        animation: { duration: 200, easing: "easeOutQuart" },
+  responsive: true,
+  maintainAspectRatio: false,
+  interaction: { mode: "index", intersect: false },
+
+  plugins: {
+    legend: {
+      labels: { color: "#d1d5db" },
+      position: "top",
+    },
+    tooltip: {
+      enabled: true,
+      mode: "index",
+      intersect: false,
+      animation: { duration: 200, easing: "easeOutQuart" },
+    },
+
+    // ✅ custom plugin must be inside "plugins"
+    cleaner: {
+      beforeInit(chart) {
+        // no-op but avoids gradient errors
       },
     },
-    animation: {
-      duration: 700,
-      easing: "easeOutQuart",
+  },
+
+  animation: {
+    duration: 700,
+    easing: "easeOutQuart",
+  },
+
+  scales: {
+    x: {
+      ticks: { color: "#cbd5e1", maxRotation: 0, autoSkip: true },
+      grid: { color: "#111827" },
     },
-    scales: {
-      x: {
-        ticks: { color: "#cbd5e1", maxRotation: 0, autoSkip: true },
-        grid: { color: "#111827" },
-      },
-      y: {
-        beginAtZero: true,
-        ticks: { color: "#cbd5e1" },
-        grid: { color: "#0f1724" },
-      },
+    y: {
+      beginAtZero: true,
+      ticks: { color: "#cbd5e1" },
+      grid: { color: "#0f1724" },
     },
-    // lightweight plugin to avoid gradient errors before area is ready
-    plugins: [
-      {
-        id: "cleaner",
-        beforeInit: function (chart) {
-          // noop — gradients are created in scriptable functions above
-        },
-      },
-    ],
-  };
+  },
+};
 
   // build alerts array (keeps it simple & light)
   const alerts = [];

@@ -16,6 +16,7 @@ import Logs from "./pages/Logger.jsx";
 import StatsPage from "./pages/StatsPage.jsx";
 import Settings from "./pages/Settings.jsx";
 import Feedback from "./pages/Feedback.jsx";
+import RecordsList from "./pages/Records.jsx";
 
 
 
@@ -50,6 +51,10 @@ export default function App() {
           <Route path="/logs" element={<Logs />} />
           <Route path="/stats" element={<StatsPage />} />
           <Route path="/settings" element={<Settings />} />
+
+          {/*records*/}
+          <Route path="/records" element={<RecordsList />} />
+
         </Route>
 
         {/* Optional 404 */}

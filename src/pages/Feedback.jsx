@@ -19,22 +19,23 @@ export default function Feedback() {
   }, []);
 
   const loadFeedback = async () => {
-  setLoading(true);
-  try {
-    const res = await api.get("/v1/admin/feedback?page=1");
+    setLoading(true);
+    try {
+      const res = await api.get("/v1/admin/feedback?page=1");
 
-    const withStatus = res.data.data.map((f) => ({
-      ...f,
-      status: "new",
-    }));
+      // if backend doesn't send status → fallback to "new"
+      const withStatus = res.data.data.map((f) => ({
+        ...f,
+        status: f.status || "new",
+      }));
 
-    setFeedback(withStatus);
-    setFiltered(withStatus);
-  } catch (err) {
-    console.error("Error loading feedback", err);
-  }
-  setTimeout(() => setLoading(false), 300);
-};
+      setFeedback(withStatus);
+      setFiltered(withStatus);
+    } catch (err) {
+      console.error("Error loading feedback", err);
+    }
+    setTimeout(() => setLoading(false), 300);
+  };
 
   // 🔍 Filter + Search Handling
   useEffect(() => {
@@ -96,7 +97,7 @@ export default function Feedback() {
         <div className="flex gap-3 flex-wrap justify-center">
           {[
             { key: "all", label: "All", icon: Inbox },
-            { key: "new", label: "New", icon: Clock },
+            { key: "new", label: "New", icon: Inbox },
             { key: "progress", label: "In-Progress", icon: Clock },
             { key: "fixed", label: "Fixed", icon: CheckCircle },
           ].map((f) => (

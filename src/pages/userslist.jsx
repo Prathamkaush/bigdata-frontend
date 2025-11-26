@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader/loader.jsx";
 import api from "../api/admin.js";
@@ -11,10 +11,9 @@ export default function UsersList() {
   const [sortCredits, setSortCredits] = useState("none");
 
   const [page, setPage] = useState(1);
-  const perPage = 8;
+  const perPage = 10;
 
   const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,56 +31,54 @@ export default function UsersList() {
     setTimeout(() => setLoading(false), 300);
   };
 
-  // ----------------------------------------------------
-  // FILTERING
-  // ----------------------------------------------------
+  // FILTERS
   let filtered = [...users];
 
-  // Search filter
   filtered = filtered.filter((u) =>
     u.username?.toLowerCase()?.includes(filter.toLowerCase())
   );
 
-  // Role filter
   if (roleFilter !== "all") {
     filtered = filtered.filter((u) => u.role === roleFilter);
   }
 
-  // Sort by credits
+  // SORTING
   if (sortCredits === "low-high") {
     filtered.sort((a, b) => a.credits - b.credits);
   } else if (sortCredits === "high-low") {
     filtered.sort((a, b) => b.credits - a.credits);
   }
 
-  // Pagination Logic
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((page - 1) * perPage, page * perPage);
 
-  // ----------------------------------------------------
-  // CREDIT COLOR LOGIC
-  // ----------------------------------------------------
+  // CREDIT COLOR
   const getCreditColor = (credits) => {
     if (credits < 50) return "text-red-400 font-bold";
     if (credits < 500) return "text-yellow-400 font-semibold";
     if (credits <= 1000) return "text-green-400 font-semibold";
-    return "text-yellow-300 font-bold"; // gold
+    return "text-yellow-300 font-bold"; // premium accounts
   };
 
-  // ----------------------------------------------------
-  // UI
-  // ----------------------------------------------------
+  // ROLE COLOR
+  const roleBadge = (role) => {
+    if (role === "admin")
+      return "bg-red-600/20 text-red-400 border border-red-700";
+    if (role === "sub_admin")
+      return "bg-blue-600/20 text-blue-300 border border-blue-700";
+    return "bg-gray-600/20 text-gray-300 border border-gray-700";
+  };
+
   return (
     <div className="space-y-6">
-
       <h1 className="text-2xl font-bold">Users List</h1>
 
       <div className="bg-metallic-plate p-6 rounded-xl border border-metallic-gun">
 
-        {/* Top Controls */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        {/* CONTROLS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
           
-          {/* Search */}
+          {/* SEARCH */}
           <div className="relative">
             <Search className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
@@ -93,18 +90,19 @@ export default function UsersList() {
             />
           </div>
 
-          {/* Role Filter */}
+          {/* ROLE */}
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
             className="w-full p-3 rounded-lg bg-black/40 border border-metallic-gun text-white"
           >
             <option value="all">All Roles</option>
-            <option value="user">Users</option>
             <option value="admin">Admin</option>
+            <option value="sub_admin">Sub Admin</option>
+            <option value="user">Regular User</option>
           </select>
 
-          {/* Sort Credits */}
+          {/* SORT */}
           <select
             value={sortCredits}
             onChange={(e) => setSortCredits(e.target.value)}
@@ -114,29 +112,30 @@ export default function UsersList() {
             <option value="low-high">Low → High</option>
             <option value="high-low">High → Low</option>
           </select>
-
         </div>
 
         {/* TABLE */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full text-sm text-left">
             <thead>
-              <tr className="text-gray-400 border-b border-metallic-gun text-sm">
+              <tr className="text-gray-400 border-b border-metallic-gun">
                 <th className="py-2">User</th>
-                <th className="py-2">Credits</th>
                 <th className="py-2">Role</th>
-                <th className="py-2">Created At</th>
+                <th className="py-2">Credits</th>
+                <th className="py-2">Status</th>
+                <th className="py-2">Created</th>
                 <th></th>
               </tr>
             </thead>
 
             <tbody>
               {loading ? (
-                [...Array(8)].map((_, i) => (
+                [...Array(10)].map((_, i) => (
                   <tr key={i} className="animate-pulse">
                     <td className="py-3"><div className="h-4 bg-gray-700 w-28 rounded"></div></td>
                     <td className="py-3"><div className="h-4 bg-gray-700 w-16 rounded"></div></td>
-                    <td className="py-3"><div className="h-4 bg-gray-700 w-10 rounded"></div></td>
+                    <td className="py-3"><div className="h-4 bg-gray-700 w-12 rounded"></div></td>
+                    <td className="py-3"><div className="h-4 bg-gray-700 w-16 rounded"></div></td>
                     <td className="py-3"><div className="h-4 bg-gray-700 w-32 rounded"></div></td>
                     <td></td>
                   </tr>
@@ -151,20 +150,40 @@ export default function UsersList() {
                 paginated.map((u) => (
                   <tr
                     key={u.id}
-                    className="text-white border-b border-metallic-gun/50 hover:bg-black/20 transition cursor-pointer"
+                    className="border-b border-metallic-gun/40 hover:bg-black/20 cursor-pointer"
                     onClick={() => navigate(`/users/${u.id}`)}
                   >
-                    <td className="py-2">{u.username}</td>
+                    {/* Username */}
+                    <td className="py-2 text-white">{u.username}</td>
 
-                    {/* Credits Color */}
+                    {/* Role */}
+                    <td className="py-2">
+                      <span className={`px-3 py-1 rounded-full text-xs ${roleBadge(u.role)}`}>
+                        {u.role.replace("_", " ")}
+                      </span>
+                    </td>
+
+                    {/* Credits */}
                     <td className={`py-2 ${getCreditColor(u.credits)}`}>
                       {u.credits}
                     </td>
 
-                    <td className="py-2 capitalize">{u.role}</td>
-                    <td className="py-2">{new Date(u.created_at).toLocaleString()}</td>
+                    {/* Status */}
+                    <td className="py-2 capitalize">
+                      {u.status === "active" ? (
+                        <span className="text-green-400">Active</span>
+                      ) : (
+                        <span className="text-red-400">Disabled</span>
+                      )}
+                    </td>
 
-                    <td className="py-2 text-accent">View →</td>
+                    {/* Created at */}
+                    <td className="py-2">
+                      {new Date(u.created_at).toLocaleString()}
+                    </td>
+
+                    {/* VIEW BUTTON */}
+                    <td className="py-2 text-accent font-semibold">View →</td>
                   </tr>
                 ))
               )}
@@ -173,7 +192,7 @@ export default function UsersList() {
         </div>
 
         {/* PAGINATION */}
-        <div className="flex items-center justify-center gap-3 mt-4">
+        <div className="flex items-center justify-center gap-4 mt-6">
           <button
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
@@ -194,6 +213,7 @@ export default function UsersList() {
             Next
           </button>
         </div>
+
       </div>
     </div>
   );

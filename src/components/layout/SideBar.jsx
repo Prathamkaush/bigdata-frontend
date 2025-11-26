@@ -136,6 +136,19 @@ export default function Sidebar() {
             )}
           </div>
 
+{/*recodrs*/}
+
+<NavLink
+  to="/records"
+  className={({ isActive }) =>
+    `flex items-center gap-3 px-3 py-2 text-sm ${
+      isActive ? parentActive : parentInactive
+    }`
+  }
+>
+  <List size={20} /> Records
+</NavLink>
+
           {/* CREDITS MODULE */}
           <div>
             <button

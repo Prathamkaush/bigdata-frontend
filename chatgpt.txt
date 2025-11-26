@@ -1,87 +1,102 @@
 /bigdata-admin
 │
 ├── src/
-│   ├── api/                           # All API communication (modular)
-│   │   ├                
-│   │   ├── admin.js                   # Admin APIs
-│   │   ├
-│   │   ├
-│   │   ├
-│   │   ├
-│   │   ├
-│   │   └
+│   ├── api/                               # All API services (separated by module)
+│   │   ├── admin.js                       # Admin APIs (users, credits, logs, stats)
+│   │   ├── auth.js                        # Login / session / admin-key verify
+│   │   ├── feedback.js                    # Feedback module API
+│   │   ├── records.js                     # ClickHouse records API
+│   │   ├── analytics.js                   # Analytics endpoints
+│   │   ├── monitoring.js                  # System health / workers
+│   │   └── http.js                        # Global Axios instance (baseURL, interceptors)
 │   │
-│   ├ 
-│   │  
-│   │  
-│   │  
-│   │  
+│   ├── assets/
+│   │   ├── logos/                         # Logos / brand assets
+│   │   │   ├── logo.svg
+│   │   │   ├── favicon.png
+│   │   │   └── icon-dark.svg
+│   │   └── illustrations/                 # Empty-state images
 │   │
 │   ├── components/
-│   │   ├── ui/                        # Fully reusable UI components
+│   │   ├── ui/                            # Reusable UI atoms
 │   │   │   ├── Button.jsx
-│   │   │   
-│   │   │   
-│   │   │   
-│   │   │   
-│   │   │   
-│   │   │   
+│   │   │   ├── Input.jsx
+│   │   │   ├── Select.jsx
+│   │   │   ├── Tag.jsx                    # status chips (new, progress, fixed)
+│   │   │   ├── Card.jsx
+│   │   │   ├── Modal.jsx
+│   │   │   ├── Drawer.jsx
+│   │   │   ├── Table.jsx
+│   │   │   ├── Skeleton.jsx               # loading placeholders
+│   │   │   └── Pagination.jsx
 │   │   │
-│   │   ├── 
-│   │   │   
-│   │   │   
-│   │   │   
-│   │   │   
+│   │   ├── charts/                        # Recharts-based visualizations
+│   │   │   ├── LineChart.jsx
+│   │   │   ├── BarChart.jsx
+│   │   │   ├── PieChart.jsx
+│   │   │   └── HeatmapChart.jsx
 │   │   │
-│   │   ├── layout/                    # Layout structure
+│   │   ├── layout/
 │   │   │   ├── Sidebar.jsx
-│   │   │   ├── Layout.jsx             # Full admin wrapper
-│   │   │   ├         
-│   │   │   └── ProtectedLayout.jsx    # Layout + role guard
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Layout.jsx                 # Main admin layout wrapper
+│   │   │   └── ProtectedLayout.jsx        # Guard: admin/sub-admin access
 │   │   │
-│   │   ├── Loader.jsx                 # Global loader
-│   │   ├── StatCard.jsx               # Dashboard cards
-│   │   ├─
-│   │   ├─
-│   │   └─
+│   │   ├── Loader.jsx
+│   │   ├── StatCard.jsx
+│   │   ├── EmptyState.jsx                 # component for "No Data Found"
+│   │   ├── ErrorBlock.jsx
+│   │   └── StatusBadge.jsx                # For user roles/status
 │   │
-│   ├─
-│   │   
-│   │   
-│   │   
-│   │   
-│   │   
+│   ├── context/
+│   │   ├── AuthContext.jsx                # Stores admin auth / api-key
+│   │   ├── ThemeContext.jsx               # Light/Dark theme switch
+│   │   └── SidebarContext.jsx
 │   │
-│   ├── 
-│   │   
-│   │   
-│   │   
+│   ├── hooks/
+│   │   ├── useFetch.jsx                   # Universal fetch wrapper
+│   │   ├── useDebounce.js                 # Debounced search
+│   │   ├── usePagination.js               # Shared pagination hook
+│   │   └── useTheme.js
+│   │
+│   ├── utils/
+│   │   ├── formatDate.js
+│   │   ├── formatNumber.js
+│   │   ├── storage.js                     # localStorage helpers
+│   │   ├── roleUtils.js                   # admin / sub-admin strict checks
+│   │   └── validators.js
 │   │
 │   ├── pages/
 │   │   ├── login/
 │   │   │   └── Login.jsx
 │   │   │
 │   │   ├── dashboard/
-│   │   │   └── Dashboard.jsx          # Main dashboard + graphs
+│   │   │   └── Dashboard.jsx
 │   │   │
-│   │   ├── users/                     # User Module
+│   │   ├── users/
 │   │   │   ├── UserList.jsx
 │   │   │   ├── CreateUser.jsx
-│   │   │   └── UserDetails.jsx
+│   │   │   ├── UserDetails.jsx
+│   │   │   └── EditUser.jsx               # (Role update, status update)
 │   │   │
-│   │   ├── credits/                   # Credits Module
-│   │   │   ├── CreditsMain.jsx
+│   │   ├── credits/
 │   │   │   ├── AddCredits.jsx
+│   │   │   ├── CreditsHistory.jsx         # NEW → detailed audit log per user
 │   │   │   └── ManageCredits.jsx
 │   │   │
-│   │   ├── feedback/                  # Feedback Module
+│   │   ├── feedback/
 │   │   │   ├── FeedbackList.jsx
-│   │   │   └── FeedbackDetails.jsx
+│   │   │   ├── FeedbackDetails.jsx        # NEW → reply, mark as fixed
+│   │   │   └── FeedbackAnalytics.jsx      # NEW → avg rating, trending issues
+│   │   │
+│   │   ├── records/
+│   │   │   ├── RecordsList.jsx
+│   │   │   └── RecordDetails.jsx          # Full drawer page
 │   │   │
 │   │   ├── logs/
-│   │   │   └── Logs.jsx               # All logs viewer
+│   │   │   └── Logs.jsx
 │   │   │
-│   │   ├── analytics/                 # Analytics dashboards
+│   │   ├── analytics/
 │   │   │   ├── UsageAnalytics.jsx
 │   │   │   ├── CreditsAnalytics.jsx
 │   │   │   ├── EndpointAnalytics.jsx
@@ -90,47 +105,24 @@
 │   │   ├── settings/
 │   │   │   ├── GeneralSettings.jsx
 │   │   │   ├── SecuritySettings.jsx
-│   │   │   └── ApiKeys.jsx
+│   │   │   ├── ApiKeys.jsx
+│   │   │   └── AdminProfile.jsx
 │   │   │
-│   │   └── system/                    # System monitoring
-│   │       ├── SystemHealth.jsx
-│   │       ├── DatabaseStats.jsx
-│   │       └── WorkerStatus.jsx
+│   │   └── system/
+│   │       ├── SystemHealth.jsx          # CPU, RAM, API timings
+│   │       ├── DatabaseStats.jsx         # Postgres + ClickHouse counters
+│   │       └── WorkerStatus.jsx          # ingestion pipeline workers
 │   │
-│   ├── 
-│   │   
-│   │   
-│   │   
-│   │   
-│   │   
-│   │
-│   ├── App.jsx                        # App router
-│   ├── main.jsx                       # React entry
-│   └── index.css                      # Tailwind / custom CSS
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
 │
 ├── public/
 │   ├── favicon.ico
 │   ├── logo.svg
 │   └── index.html
 │
-├── package.json
-├── vite.config.js
-├── README.md
+│── package.json
+│── vite.config.js
+│── README.md
 └── .env
-
-Partially Done (next steps)
-🔸 Credit History (audit log)
-
-Frontend + backend needed.
-
-🔸 Feedback Status Change
-
-(reply, mark resolved)
-
-🔸 System Monitoring
-
-CPU, RAM, DB latency — needs backend + UI.
-
-🔸 Dynamic Analytics (ClickHouse)
-
-Need filters → endpoint / time range / heatmap.

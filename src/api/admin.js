@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://bigdata-backend-s33g.onrender.com",
+  baseURL: "http://localhost:8080",
 });
 
 api.interceptors.request.use((config) => {
@@ -11,5 +11,9 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+export const createUser = (payload) =>
+  api.post("/v1/admin/create-user", payload);
+
 
 export default api;
