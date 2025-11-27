@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../api/admin.js"; // IMPORTANT: your axios instance
+import api from "../api/admin.js"; 
 import { KeyRound, ShieldCheck } from "lucide-react";
 
 export default function Login() {
@@ -7,7 +7,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // SHA256 helper (browser-native)
+  // SHA256
   const hashKey = async (key) => {
     const encoder = new TextEncoder();
     const data = encoder.encode(key);
@@ -22,26 +22,35 @@ export default function Login() {
       return;
     }
 
-    setError("");
     setLoading(true);
+    setError("");
 
     try {
-      // 1️⃣ Hash the key before sending
+      // 1. Hash key
       const hashed = await hashKey(apiKey);
 
-      // 2️⃣ Send request to backend for validation
+      // 2. Verify API key
       const res = await api.post("/v1/admin/verify-key", {
         hash: hashed,
       });
 
-      if (res.data?.valid) {
-        // 3️⃣ Save PLAINTEXT key (your API uses plaintext for headers)
-        localStorage.setItem("admin_api_key", apiKey);
-
-        window.location.href = "/dashboard";
-      } else {
+      if (!res.data?.valid) {
         setError("Invalid API Key.");
+        setLoading(false);
+        return;
       }
+
+      // SUCCESS → Save credentials
+      const role = res.data.role || "sub_admin"; // FALLBACK
+
+      localStorage.setItem("admin_api_key", apiKey);
+      localStorage.setItem("admin_role", role);
+
+      console.log("Logged in as:", role);
+
+      // Redirect
+      window.location.href = "/dashboard";
+
     } catch (err) {
       console.log(err);
       setError("Authentication failed. Invalid API Key.");
@@ -69,7 +78,7 @@ export default function Login() {
             <KeyRound size={18} className="text-gray-400 mr-2" />
             <input
               className="bg-transparent flex-1 outline-none text-white"
-              placeholder="Enter admin API key..."
+              placeholder="Enter admin / sub admin API key..."
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
             />

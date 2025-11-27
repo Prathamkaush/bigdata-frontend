@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, Shield, KeyRound, CircleDot } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader/loader.jsx";
 import api from "../api/admin.js";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
-  const [sortCredits, setSortCredits] = useState("none");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const [page, setPage] = useState(1);
-  const perPage = 10;
+  const perPage = 8;
 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -31,98 +31,96 @@ export default function UsersList() {
     setTimeout(() => setLoading(false), 300);
   };
 
-  // FILTERS
+  // 🔍 FILTERING
   let filtered = [...users];
 
-  filtered = filtered.filter((u) =>
-    u.username?.toLowerCase()?.includes(filter.toLowerCase())
-  );
+  if (search.trim()) {
+    filtered = filtered.filter((u) =>
+      u.username.toLowerCase().includes(search.toLowerCase())
+    );
+  }
 
   if (roleFilter !== "all") {
     filtered = filtered.filter((u) => u.role === roleFilter);
   }
 
-  // SORTING
-  if (sortCredits === "low-high") {
-    filtered.sort((a, b) => a.credits - b.credits);
-  } else if (sortCredits === "high-low") {
-    filtered.sort((a, b) => b.credits - a.credits);
+  if (statusFilter !== "all") {
+    filtered = filtered.filter((u) => u.status === statusFilter);
   }
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((page - 1) * perPage, page * perPage);
 
-  // CREDIT COLOR
-  const getCreditColor = (credits) => {
-    if (credits < 50) return "text-red-400 font-bold";
-    if (credits < 500) return "text-yellow-400 font-semibold";
-    if (credits <= 1000) return "text-green-400 font-semibold";
-    return "text-yellow-300 font-bold"; // premium accounts
+  // 🎨 BADGES
+  const badgeColor = {
+    admin: "bg-red-600/20 text-red-400 border border-red-800",
+    sub_admin: "bg-blue-600/20 text-blue-300 border border-blue-700",
+    user: "bg-gray-600/20 text-gray-300 border border-gray-700",
   };
 
-  // ROLE COLOR
-  const roleBadge = (role) => {
-    if (role === "admin")
-      return "bg-red-600/20 text-red-400 border border-red-700";
-    if (role === "sub_admin")
-      return "bg-blue-600/20 text-blue-300 border border-blue-700";
-    return "bg-gray-600/20 text-gray-300 border border-gray-700";
+  const statusColor = (s) =>
+    s === "active" ? "text-green-400" : "text-red-400";
+
+  const creditColor = (c) => {
+    if (c < 50) return "text-red-400";
+    if (c < 500) return "text-yellow-400";
+    return "text-green-400";
   };
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Users List</h1>
+      <h1 className="text-2xl font-bold">Users</h1>
 
       <div className="bg-metallic-plate p-6 rounded-xl border border-metallic-gun">
 
-        {/* CONTROLS */}
+        {/* FILTER BAR */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-          
-          {/* SEARCH */}
+
+          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
-              type="text"
-              placeholder="Search users..."
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
+              placeholder="Search username..."
               className="w-full pl-10 p-3 rounded-lg bg-black/40 border border-metallic-gun text-white"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          {/* ROLE */}
+          {/* Role */}
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="w-full p-3 rounded-lg bg-black/40 border border-metallic-gun text-white"
+            className="p-3 rounded-lg bg-black/40 border border-metallic-gun text-white"
           >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
             <option value="sub_admin">Sub Admin</option>
-            <option value="user">Regular User</option>
+            <option value="user">User</option>
           </select>
 
-          {/* SORT */}
+          {/* Status */}
           <select
-            value={sortCredits}
-            onChange={(e) => setSortCredits(e.target.value)}
-            className="w-full p-3 rounded-lg bg-black/40 border border-metallic-gun text-white"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="p-3 rounded-lg bg-black/40 border border-metallic-gun text-white"
           >
-            <option value="none">Sort by Credits</option>
-            <option value="low-high">Low → High</option>
-            <option value="high-low">High → Low</option>
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="disabled">Disabled</option>
           </select>
         </div>
 
         {/* TABLE */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
+          <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-400 border-b border-metallic-gun">
-                <th className="py-2">User</th>
+                <th className="py-2">Username</th>
                 <th className="py-2">Role</th>
                 <th className="py-2">Credits</th>
                 <th className="py-2">Status</th>
+                <th className="py-2">API Key</th>
                 <th className="py-2">Created</th>
                 <th></th>
               </tr>
@@ -130,19 +128,19 @@ export default function UsersList() {
 
             <tbody>
               {loading ? (
-                [...Array(10)].map((_, i) => (
+                [...Array(8)].map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    <td className="py-3"><div className="h-4 bg-gray-700 w-28 rounded"></div></td>
-                    <td className="py-3"><div className="h-4 bg-gray-700 w-16 rounded"></div></td>
+                    <td className="py-3"><div className="h-4 bg-gray-700 w-20 rounded"></div></td>
+                    <td className="py-3"><div className="h-4 bg-gray-700 w-14 rounded"></div></td>
+                    <td className="py-3"><div className="h-4 bg-gray-700 w-10 rounded"></div></td>
                     <td className="py-3"><div className="h-4 bg-gray-700 w-12 rounded"></div></td>
                     <td className="py-3"><div className="h-4 bg-gray-700 w-16 rounded"></div></td>
-                    <td className="py-3"><div className="h-4 bg-gray-700 w-32 rounded"></div></td>
-                    <td></td>
+                    <td className="py-3"><div className="h-4 bg-gray-700 w-24 rounded"></div></td>
                   </tr>
                 ))
               ) : paginated.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="py-4 text-center text-gray-400">
+                  <td colSpan="7" className="py-4 text-center text-gray-400">
                     No users found.
                   </td>
                 </tr>
@@ -154,35 +152,41 @@ export default function UsersList() {
                     onClick={() => navigate(`/users/${u.id}`)}
                   >
                     {/* Username */}
-                    <td className="py-2 text-white">{u.username}</td>
+                    <td className="py-2 text-white font-semibold">{u.username}</td>
 
                     {/* Role */}
                     <td className="py-2">
-                      <span className={`px-3 py-1 rounded-full text-xs ${roleBadge(u.role)}`}>
+                      <span
+                        className={`px-3 py-1 text-xs rounded-full ${badgeColor[u.role]}`}
+                      >
                         {u.role.replace("_", " ")}
                       </span>
                     </td>
 
                     {/* Credits */}
-                    <td className={`py-2 ${getCreditColor(u.credits)}`}>
+                    <td className={`py-2 font-semibold ${creditColor(u.credits)}`}>
                       {u.credits}
                     </td>
 
                     {/* Status */}
-                    <td className="py-2 capitalize">
-                      {u.status === "active" ? (
-                        <span className="text-green-400">Active</span>
-                      ) : (
-                        <span className="text-red-400">Disabled</span>
-                      )}
+                    <td className={`py-2 capitalize ${statusColor(u.status)}`}>
+                      {u.status}
                     </td>
 
-                    {/* Created at */}
+                    {/* API Key */}
                     <td className="py-2">
+                      <div className="flex items-center gap-1 text-gray-300">
+                        <KeyRound size={14} />
+                        <span className="blur-sm hover:blur-none">{u.api_key}</span>
+                      </div>
+                    </td>
+
+                    {/* Created */}
+                    <td className="py-2 text-gray-400">
                       {new Date(u.created_at).toLocaleString()}
                     </td>
 
-                    {/* VIEW BUTTON */}
+                    {/* VIEW */}
                     <td className="py-2 text-accent font-semibold">View →</td>
                   </tr>
                 ))
@@ -201,9 +205,7 @@ export default function UsersList() {
             Prev
           </button>
 
-          <span className="text-gray-300">
-            Page {page} / {totalPages}
-          </span>
+          <span className="text-gray-300">Page {page} / {totalPages}</span>
 
           <button
             disabled={page === totalPages}
